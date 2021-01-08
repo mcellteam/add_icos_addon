@@ -42,7 +42,7 @@ class HelloWorldPanel(bpy.types.Panel):
     bl_idname = "Scene_PT_hello"
     bl_space_type = 'VIEW_3D'
     bl_region_type = 'TOOLS'
-    bl_category = "Hello World"
+    bl_category = "Add Icos"
 #    bl_context = "scene"
 
     def draw(self, context):
