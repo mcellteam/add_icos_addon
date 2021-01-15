@@ -3,7 +3,7 @@ INSTALL_DIR = /Applications/Blender-2.79-CellBlender/blender.app/Contents/Resour
 
 SHELL = /bin/sh
 
-SOURCES = ./add_icos_addon/__init__.py
+SOURCES = ./add_icos_addon/__init__.py ./add_icos_addon/panel.py
 
 ZIPFILES = $(SOURCES)
 
