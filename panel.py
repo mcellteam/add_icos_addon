@@ -17,6 +17,10 @@ class MySceneSettings(bpy.types.PropertyGroup):
     name = bpy.props.StringProperty(name="Test Prop", default="Unknown")
     num_icos = bpy.props.IntProperty(name="Number of Icos", default=10)
 
+class MyObjectProperties(bpy.types.PropertyGroup):
+    name = bpy.props.StringProperty(name="Test Obj Prop", default="Unknown")
+    value1 = bpy.props.FloatProperty(name="Value 1", default=0)
+    value2 = bpy.props.FloatProperty(name="Value 2", default=0)
 
 class SceneAddIcos(bpy.types.Operator):
     """My Addon to Add Random Icospheres to Scene"""      # Use this as a tooltip for menu items and buttons.
@@ -34,7 +38,9 @@ class SceneAddIcos(bpy.types.Operator):
             y = 10*(random.random()-0.5)
             z = 10*(random.random()-0.5)
             bpy.ops.mesh.primitive_ico_sphere_add(location=(x,y,z))
-
+            obj = context.active_object
+            obj.my_obj_props.value1 = random.random()
+            obj.my_obj_props.value2 = random.random()
 
         return {'FINISHED'}            # Lets Blender know the operator finished successfully.
 

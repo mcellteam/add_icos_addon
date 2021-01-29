@@ -9,6 +9,15 @@ import bpy
 import random
 import os
 
+if "panel" not in locals():
+    print("Importing Add Icos Addon")
+    from . import panel
+else:
+    print("Reloading Add Icos Addon")
+    import imp
+    imp.reload(panel)
+
+'''
 if "bpy" in locals():
     print("Reloading Add Icos Addon")
     import imp
@@ -17,12 +26,14 @@ else:
     print("Importing Add Icos Addon")
     from . import \
         panel
+'''
 
 
 def register():
     # register all of the components of the Addon
     bpy.utils.register_module(__name__)
     bpy.types.Scene.my_settings = bpy.props.PointerProperty(type=panel.MySceneSettings)
+    bpy.types.Object.my_obj_props = bpy.props.PointerProperty(type=panel.MyObjectProperties)
     print("Add Icos Addon registered")
 
 
