@@ -16,6 +16,7 @@ def unregister():
 class MySceneSettings(bpy.types.PropertyGroup):
     name = bpy.props.StringProperty(name="Test Prop", default="Unknown")
     num_icos = bpy.props.IntProperty(name="Number of Icos", default=10)
+    active_index = bpy.props.IntProperty(name="Active Index", default=0)
 
 class MyObjectProperties(bpy.types.PropertyGroup):
     name = bpy.props.StringProperty(name="Test Obj Prop", default="Unknown")
@@ -45,6 +46,25 @@ class SceneAddIcos(bpy.types.Operator):
         return {'FINISHED'}            # Lets Blender know the operator finished successfully.
 
 
+class MY_UL_obj_draw_item(bpy.types.UIList):
+    def draw_item(self, context, layout, data, item, icon, active_data,
+                  active_propname, index):
+        scn = bpy.context.scene
+        layout.label(item.name)
+
+        '''
+        filt = scn.test_tool.spine_namestruct_name.replace('#','[0-9]')
+        self.filter_name = filt
+        self.use_filter_sort_alpha = True
+        if item.processor.newton == True:
+            layout.label(item.name, icon='FILE_TICK')
+        elif item.processor.smoothed == True:
+            layout.label(item.name, icon='MOD_SMOOTH')
+        else:
+            layout.label(item.name)
+        '''
+
+
 class HelloWorldPanel(bpy.types.Panel):
     """Creates a Panel in the Tool Self"""
     bl_label = "Hello World Panel"
@@ -67,5 +87,19 @@ class HelloWorldPanel(bpy.types.Panel):
         row.prop(scene.my_settings, "num_icos", text="number of icos")
         row = layout.row()
         row.operator("scene.add_icos")
+
+        if obj != None:
+          row = layout.row()
+          row.label(text=obj.name, icon='WORLD_DATA')
+          row = layout.row()
+          row.prop(obj.my_obj_props, "value1", text="Value 1")
+
+        '''
+         row.template_list("MY_UL_obj_draw_item","objects_in_scene",
+                          bpy.context.scene, "objects",
+                          self, "active_index",
+                          rows=2)
+        '''
+
 
 
