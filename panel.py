@@ -50,7 +50,10 @@ class MY_UL_obj_draw_item(bpy.types.UIList):
     def draw_item(self, context, layout, data, item, icon, active_data,
                   active_propname, index):
         scn = bpy.context.scene
-        layout.label(item.name)
+        col = layout.column()
+        col.label(item.name)
+        col = layout.column()
+        col.prop(item.my_obj_props, "value1", text="Value 1")
 
         '''
         filt = scn.test_tool.spine_namestruct_name.replace('#','[0-9]')
@@ -90,16 +93,15 @@ class HelloWorldPanel(bpy.types.Panel):
 
         if obj != None:
           row = layout.row()
-          row.label(text=obj.name, icon='WORLD_DATA')
+          row.label(text=obj.name, icon='MESH_ICOSPHERE')
           row = layout.row()
           row.prop(obj.my_obj_props, "value1", text="Value 1")
 
-        '''
-         row.template_list("MY_UL_obj_draw_item","objects_in_scene",
-                          bpy.context.scene, "objects",
-                          self, "active_index",
-                          rows=2)
-        '''
+        row = layout.row()
+        row.template_list("MY_UL_obj_draw_item","objects_in_scene",
+                          scene, "objects",
+                          scene.my_settings, "active_index",
+                          rows=10)
 
 
 
