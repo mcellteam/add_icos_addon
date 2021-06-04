@@ -54,18 +54,39 @@ class MY_UL_obj_draw_item(bpy.types.UIList):
         col.label(item.name)
         col = layout.column()
         col.prop(item.my_obj_props, "value1", text="Value 1")
+#        self.use_filter_sort_alpha = True
 
-        '''
-        filt = scn.test_tool.spine_namestruct_name.replace('#','[0-9]')
-        self.filter_name = filt
-        self.use_filter_sort_alpha = True
-        if item.processor.newton == True:
-            layout.label(item.name, icon='FILE_TICK')
-        elif item.processor.smoothed == True:
-            layout.label(item.name, icon='MOD_SMOOTH')
-        else:
-            layout.label(item.name)
-        '''
+    def filter_items(self, context, data, propname):
+      global contour_filter_pattern
+
+      helper_funcs = bpy.types.UI_UL_list
+
+      items = getattr(data, propname)
+
+      flt_flags = []
+      flt_neworder = []
+
+      filter_str = self.filter_name
+
+      chr0 = filter_str[0]
+
+      if chr0 == '>':
+        filter_val = float(filter_str[1:])
+        flt_flags = [ self.bitflag_filter_item*((item.my_obj_props.value1>filter_val)) for item in items ]
+      elif chr0 == '<':
+        filter_val = float(filter_str[1:])
+        flt_flags = [ self.bitflag_filter_item*((item.my_obj_props.value1<filter_val)) for item in items ]
+      elif chr0 == '=':
+        filter_val = float(filter_str[1:])
+        flt_flags = [ self.bitflag_filter_item*((item.my_obj_props.value1==filter_val)) for item in items ]
+      else:
+        filter_val = float(filter_str)
+        flt_flags = [ self.bitflag_filter_item*((item.my_obj_props.value1==filter_val)) for item in items ]
+
+      flt_neworder = helper_funcs.sort_items_by_name(items, 'name')
+
+      return flt_flags, flt_neworder
+
 
 
 class HelloWorldPanel(bpy.types.Panel):
