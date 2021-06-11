@@ -47,6 +47,8 @@ class SceneAddIcos(bpy.types.Operator):
 
 
 class MY_UL_obj_draw_item(bpy.types.UIList):
+    my_filter_name = bpy.props.StringProperty(name='my filter name', default = '', description='filter by value1: e.g. >0.1  >0.5 ...')
+
     def draw_item(self, context, layout, data, item, icon, active_data,
                   active_propname, index):
         scn = bpy.context.scene
@@ -55,6 +57,10 @@ class MY_UL_obj_draw_item(bpy.types.UIList):
         col = layout.column()
         col.prop(item.my_obj_props, "value1", text="Value 1")
 #        self.use_filter_sort_alpha = True
+
+    def draw_filter(self, context, layout):
+        row = layout.row()
+        row.prop(self, 'my_filter_name')
 
     def filter_items(self, context, data, propname):
       global contour_filter_pattern
@@ -66,7 +72,7 @@ class MY_UL_obj_draw_item(bpy.types.UIList):
       flt_flags = []
       flt_neworder = []
 
-      filter_str = self.filter_name
+      filter_str = self.my_filter_name
 
       chr0 = filter_str[0]
 
